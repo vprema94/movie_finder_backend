@@ -5,8 +5,10 @@ class MoviesController < ApplicationController
 	end
 
 	def create
-		@movie = Movie.new(movie_params)
+		@movie = Movie.new(title: movie_params['title'], search_id: movie_params['search_id'], poster: movie_params['poster'])
 		if @movie.save
+			currentUser = User.find(movie_params[:user_id])
+			@movie.users << currentUser
 			render json: @movie, status: :created
 		else
 			render json: @movie.errors.full_messages, status: :unprocessable_entity
@@ -16,6 +18,6 @@ class MoviesController < ApplicationController
 	private
 
 	def movie_params
-		params.require(:movie).permit(:title, :search_id)
+		params.permit(:title, :search_id, :poster, :user_id)
 	end
 end
