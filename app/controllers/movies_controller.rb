@@ -24,4 +24,4 @@ class MoviesController < ApplicationController
 	def movie_params
 		params.permit(:title, :search_id, :poster, :user_id, :genre)
 	end
-end
+end 

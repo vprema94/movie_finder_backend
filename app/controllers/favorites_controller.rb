@@ -1,4 +1,5 @@
 class FavoritesController < ApplicationController
+	before_action :authorized, except: [:create, :index]
 
 	def index
 		@favorites = Favorite.all
@@ -14,8 +15,9 @@ class FavoritesController < ApplicationController
 		end
    end
    
-   def destroy 
-      @favorite = Favorite.find(favorites_params[:id])
+	def destroy 
+		currentUser = User.find(favorites_params[:user_id])
+		@favorite = currentUser.favorites.find_by(movie_id: favorites_params[:movie_id])
       if @favorite.destroy
 			render json: @favorite, status: :created
 		else
@@ -26,6 +28,6 @@ class FavoritesController < ApplicationController
 	private
 
 	def favorites_params
-		params.permit(:movie_id, :user_id)
+		params.permit(:user_id, :movie_id)
 	end
 end

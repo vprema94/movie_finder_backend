@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   resources :movies
   resources :users
     post '/login', to: 'auth#create'
+    delete '/removeFavorites', to: 'favorites#destroy'
 end
